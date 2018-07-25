@@ -31,4 +31,16 @@ public class HelloControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(content().string(String.valueOf(Math.PI)));
     }
+
+    @Test
+    public void testCalculateEndpoint() throws Exception {
+        mvc.perform(get("/math/calculate?x=3&y=4").accept(MediaType.TEXT_PLAIN))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testSumEndpoint() throws Exception {
+        mvc.perform(get("/math/sum?n=3&n=4").accept(MediaType.TEXT_PLAIN))
+                .andExpect(status().isOk());
+    }
 }
