@@ -16,4 +16,8 @@ public class MathService {
         return values.stream().collect(Collectors.joining(" + ")) + " = " +
                 values.stream().mapToInt(Integer::parseInt).sum();
     }
+
+    public static String volume(int length, int width, int height) {
+        return String.format("The volume of a %dx%dx%d rectangle is %d", length, width, height, length * width * height);
+    }
 }

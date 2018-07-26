@@ -17,4 +17,10 @@ public class MathServiceTests {
     public void testSum() {
         Assert.assertEquals("4 + 5 + 6 = 15", MathService.sum(List.of("4", "5", "6")));
     }
+
+    @Test
+    public void testVolume() {
+        Assert.assertEquals("The volume of a 3x4x5 rectangle is 60",
+                MathService.volume(3, 4, 5));
+    }
 }

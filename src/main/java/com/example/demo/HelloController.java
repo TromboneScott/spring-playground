@@ -2,10 +2,10 @@ package com.example.demo;
 
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @RestController
@@ -29,5 +29,10 @@ public class HelloController {
     @GetMapping("/math/sum")
     public String sum(@RequestParam MultiValueMap<String, String> params) {
         return Optional.ofNullable(params.get("n")).map(MathService::sum).orElse("missing parameter: n");
+    }
+
+    @GetMapping("/math/volume/{length}/{width}/{height}")
+    public String volume(@PathVariable int length, @PathVariable int width, @PathVariable int height) {
+        return MathService.volume(length, width, height);
     }
 }
