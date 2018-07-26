@@ -8,8 +8,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,5 +54,41 @@ public class HelloControllerTests {
         mvc.perform(get("/math/volume/3/4/5").accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
                 .andExpect(content().string(MathService.volume(3, 4, 5)));
+    }
+
+    @Test
+    public void testAreaEndpointCircle() throws Exception {
+        AreaParams params = new AreaParams("circle", 4, 0, 0);
+        MockHttpServletRequestBuilder request = post("/math/area")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("type", params.getType())
+                .param("radius", String.valueOf(params.getRadius()));
+        mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().string(MathService.area(params)));
+    }
+
+    @Test
+    public void testAreaEndpointRectangle() throws Exception {
+        AreaParams params = new AreaParams("rectangle", 0, 4, 7);
+        MockHttpServletRequestBuilder request = post("/math/area")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("type", params.getType())
+                .param("width", String.valueOf(params.getWidth()))
+                .param("height", String.valueOf(params.getHeight()));
+        mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().string(MathService.area(params)));
+    }
+
+    @Test
+    public void testAreaEndpointInvalid() throws Exception {
+        AreaParams params = new AreaParams("circle", 0, 0, 0);
+        MockHttpServletRequestBuilder request = post("/math/area")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("type", params.getType());
+        mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().string(MathService.area(params)));
     }
 }

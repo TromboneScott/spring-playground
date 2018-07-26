@@ -1,10 +1,8 @@
 package com.example.demo;
 
+import org.springframework.http.MediaType;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -34,5 +32,10 @@ public class HelloController {
     @GetMapping("/math/volume/{length}/{width}/{height}")
     public String volume(@PathVariable int length, @PathVariable int width, @PathVariable int height) {
         return MathService.volume(length, width, height);
+    }
+
+    @PostMapping(value = "/math/area", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String area(AreaParams params) {
+        return MathService.area(params);
     }
 }
