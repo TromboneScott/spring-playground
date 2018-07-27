@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import com.sun.tools.javac.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+
+import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -46,7 +47,7 @@ public class HelloControllerTests {
     public void testSumEndpoint() throws Exception {
         mvc.perform(get("/math/sum?n=3&n=4").accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
-                .andExpect(content().string(MathService.sum(List.of("3", "4"))));
+                .andExpect(content().string(MathService.sum(Arrays.asList("3", "4"))));
     }
 
     @Test

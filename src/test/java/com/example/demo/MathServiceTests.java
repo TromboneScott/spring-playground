@@ -1,10 +1,9 @@
 package com.example.demo;
 
-import com.sun.tools.javac.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.HashMap;
+import java.util.Arrays;
 
 public class MathServiceTests {
     @Test
@@ -17,7 +16,7 @@ public class MathServiceTests {
 
     @Test
     public void testSum() {
-        Assert.assertEquals("4 + 5 + 6 = 15", MathService.sum(List.of("4", "5", "6")));
+        Assert.assertEquals("4 + 5 + 6 = 15", MathService.sum(Arrays.asList("4", "5", "6")));
     }
 
     @Test
