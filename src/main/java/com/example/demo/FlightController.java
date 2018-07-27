@@ -3,15 +3,16 @@ package com.example.demo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -27,6 +28,13 @@ public class FlightController {
     @GetMapping("/flights/flight")
     public Flight flight() {
         return createFlight(true);
+    }
+
+    @PostMapping("/flights/tickets/total")
+    public String total(@RequestBody List<Ticket> tickets) throws JsonProcessingException {
+        HashMap<String, Integer> result = new HashMap<>();
+        result.put("result", tickets.stream().mapToInt(Ticket::getPrice).sum());
+        return new ObjectMapper().writeValueAsString(result);
     }
 
     private Flight createFlight(boolean original) {
