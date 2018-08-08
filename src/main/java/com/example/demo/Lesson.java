@@ -1,7 +1,5 @@
 package com.example.demo;
 
-
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;

@@ -29,7 +29,7 @@ public class LessonsController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
-         repository.deleteById(id);
+    public void delete(@PathVariable Long id) {
+        repository.deleteById(id);
     }
 }
