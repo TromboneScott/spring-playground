@@ -2,6 +2,9 @@ package com.example.demo;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -39,5 +42,19 @@ public class LessonsController {
     @GetMapping("")
     public Iterable<Lesson> list() {
         return repository.findAll();
+    }
+
+    @GetMapping("/find/{title}")
+    public Lesson find(@PathVariable String title) {
+        return repository.findByTitle(title);
+    }
+
+    @GetMapping("/between")
+    public Iterable<Lesson> between(@RequestParam String date1, @RequestParam String date2) throws ParseException {
+        return repository.betweenForDeliveredOn(toDate(date1), toDate(date2));
+    }
+
+    private Date toDate(String date) throws ParseException {
+        return new SimpleDateFormat("yyyy-MM-dd").parse(date);
     }
 }

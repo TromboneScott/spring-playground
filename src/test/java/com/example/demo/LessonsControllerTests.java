@@ -12,6 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -70,6 +72,46 @@ public class LessonsControllerTests {
         repository.save(lesson);
 
         MockHttpServletRequestBuilder request = get("/lessons")
+                .contentType(MediaType.APPLICATION_JSON);
+        this.mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].title", equalTo(title)));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void testFind() throws Exception {
+        String title = "TEST FIND";
+
+        Lesson lesson = new Lesson();
+        lesson.setTitle(title);
+        repository.save(lesson);
+
+        MockHttpServletRequestBuilder request = get("/lessons/find/" + title)
+                .contentType(MediaType.APPLICATION_JSON);
+        this.mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title", equalTo(title)));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void testBetween() throws Exception {
+        String title = "TEST BETWEEN";
+
+        Lesson lesson1 = new Lesson();
+        lesson1.setTitle(title + ": IS NOT BETWEEN");
+        lesson1.setDeliveredOn(new SimpleDateFormat("yyyy-MM-dd").parse("2017-07-04"));
+        repository.save(lesson1);
+
+        Lesson lesson2 = new Lesson();
+        lesson2.setTitle(title);
+        lesson2.setDeliveredOn(new SimpleDateFormat("yyyy-MM-dd").parse("2018-07-04"));
+        repository.save(lesson2);
+
+        MockHttpServletRequestBuilder request = get("/lessons/between?date1=2018-01-01&date2=2018-12-31")
                 .contentType(MediaType.APPLICATION_JSON);
         this.mvc.perform(request)
                 .andExpect(status().isOk())
