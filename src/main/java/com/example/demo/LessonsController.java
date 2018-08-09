@@ -13,11 +13,6 @@ public class LessonsController {
         this.repository = repository;
     }
 
-    @GetMapping("")
-    public Iterable<Lesson> all() {
-        return repository.findAll();
-    }
-
     @PostMapping("")
     public Lesson create(@RequestBody Lesson lesson) {
         return repository.save(lesson);
@@ -39,5 +34,10 @@ public class LessonsController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         repository.deleteById(id);
+    }
+
+    @GetMapping("")
+    public Iterable<Lesson> list() {
+        return repository.findAll();
     }
 }

@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,9 +49,9 @@ public class LessonsControllerTests {
 
         Lesson lesson = new Lesson();
         lesson.setTitle("ORIGINAL");
-        repository.save(lesson);
+        Long id = repository.save(lesson).getId();
 
-        MockHttpServletRequestBuilder request = patch("/lessons/1")
+        MockHttpServletRequestBuilder request = patch("/lessons/" + id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"title\": \"" + title + "\"}");
         this.mvc.perform(request)
