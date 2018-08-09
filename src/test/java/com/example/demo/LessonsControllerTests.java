@@ -18,6 +18,7 @@ import java.util.stream.StreamSupport;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,6 +40,24 @@ public class LessonsControllerTests {
         String title = "TEST CREATE";
 
         MockHttpServletRequestBuilder request = post("/lessons")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"title\": \"" + title + "\"}");
+        this.mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title", equalTo(title)));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void testUpdate() throws Exception {
+        String title = "TEST UPDATE";
+
+        Lesson lesson = new Lesson();
+        lesson.setTitle("ORIGINAL");
+        repository.save(lesson);
+
+        MockHttpServletRequestBuilder request = patch("/lessons/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"title\": \"" + title + "\"}");
         this.mvc.perform(request)

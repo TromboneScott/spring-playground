@@ -28,6 +28,14 @@ public class LessonsController {
         return repository.findById(id);
     }
 
+    @PatchMapping("/{id}")
+    public Lesson update(@PathVariable Long id, @RequestBody Lesson lessonUpdates) throws Exception {
+        Lesson lesson = read(id).orElseThrow(() -> new Exception("ID not found: " + id));
+        lesson.setTitle(lessonUpdates.getTitle());
+        lesson.setDeliveredOn(lessonUpdates.getDeliveredOn());
+        return create(lesson);
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         repository.deleteById(id);
