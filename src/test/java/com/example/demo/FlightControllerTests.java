@@ -55,26 +55,6 @@ public class FlightControllerTests {
 
     @Test
     public void testTotalEndpointStringLiteral() throws Exception {
-        MockHttpServletRequestBuilder request = post("/flights/tickets/total")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("  {\n" +
-                        "    \"tickets\": [\n" +
-                        "      {\n" +
-                        "        \"passenger\": {\n" +
-                        "          \"firstName\": \"Some name\",\n" +
-                        "          \"lastName\": \"Some other name\"\n" +
-                        "        },\n" +
-                        "        \"price\": 200\n" +
-                        "      },\n" +
-                        "      {\n" +
-                        "        \"passenger\": {\n" +
-                        "          \"firstName\": \"Name B\",\n" +
-                        "          \"lastName\": \"Name C\"\n" +
-                        "        },\n" +
-                        "        \"price\": 150\n" +
-                        "      }\n" +
-                        "    ]\n" +
-                        "  }");
         FlightController.Passenger passenger1 = new FlightController.Passenger();
         passenger1.setFirstName("Some name");
         passenger1.setLastName("Some other name");
@@ -110,7 +90,7 @@ public class FlightControllerTests {
                 "    ]\n" +
                 "  }");
 
-        request = post("/flights/tickets/total")
+        MockHttpServletRequestBuilder request = post("/flights/tickets/total")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("[{\"Passenger\":{\"FirstName\":\"Some name\",\"LastName\":\"Some other name\"},\"Price\":200},{\"Passenger\":{\"FirstName\":\"Name B\",\"LastName\":\"Name C\"},\"Price\":150}]");
         mvc.perform(request)
