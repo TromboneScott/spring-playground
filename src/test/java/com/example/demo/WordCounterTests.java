@@ -1,21 +1,29 @@
 package com.example.demo;
 
-import org.assertj.core.util.Lists;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
 import java.util.Map;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@TestPropertySource(properties = {
+        "word-count.caseSensitive=false",
+        "word-count.words.skip[0]=the",
+        "word-count.words.skip[1]=an",
+        "word-count.words.skip[2]=a"
+})
 public class WordCounterTests {
+    @Autowired
+    private WordCounterConfig wordCounterConfig;
+
     @Test
     public void countTest() {
-        WordCounterConfig wordCounterConfig = new WordCounterConfig();
-        wordCounterConfig.setCaseSensitive(true);
-        WordCounterConfig.Words words = new WordCounterConfig.Words();
-        words.setSkip(Lists.emptyList());
-        wordCounterConfig.setWords(words);
-
         Map<String, Integer> counts = new WordCounter(wordCounterConfig).count("Home, Sweet Home");
         Assert.assertEquals(2, counts.size());
         Assert.assertEquals(2, counts.get("Home").intValue());
@@ -25,12 +33,6 @@ public class WordCounterTests {
 
     @Test
     public void countSkipTest() {
-        WordCounterConfig wordCounterConfig = new WordCounterConfig();
-        wordCounterConfig.setCaseSensitive(false);
-        WordCounterConfig.Words words = new WordCounterConfig.Words();
-        words.setSkip(Arrays.asList("the", "an", "a"));
-        wordCounterConfig.setWords(words);
-
         Map<String, Integer> counts = new WordCounter(wordCounterConfig).count("The man and a dog and an apple");
         Assert.assertEquals(4, counts.size());
         Assert.assertEquals(1, counts.get("man").intValue());
